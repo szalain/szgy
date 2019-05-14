@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+	   	<meta charset="utf-8"/>
+        <title>TUDOR - Regisztráció</title>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.2.0/classic/theme-neptune/resources/theme-neptune-all.css"></link>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.2.0/ext-all-debug.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/extjs/6.2.0/classic/theme-neptune/theme-neptune.js"></script>
+<!--         
+ 		<link rel="stylesheet" type="text/css"	href="extjs/theme-neptune-all.css">
+		<script type="text/javascript"	src="extjs/ext-all-debug.js"></script>
+		<script type="text/javascript"	src="extjs/theme-neptune.js"></script>
+ -->       
+        <script type="text/javascript">
+                Ext.onReady(function () {
+                    var field, panel;
+                    
+                    var regpanel = Ext.create('Ext.form.Panel', {
+                    	region: 'center',
+                        title: 'Regisztráció',
+                        method: 'POST',
+                    	standardSubmit:true, 
+                    	width: 350,
+                    	height: 350,
+                        //url: '/user/new',
+                        headers: {'Accept': 'application/json', 'Content-Type': 'application/json' },
+                        items: [{
+                            xtype: 'textfield',
+                            fieldLabel: 'Felhasználónév',
+                            name: 'username'
+                        },
+                        {
+                            xtype: 'textfield',
+                            inputType: 'password',
+                            fieldLabel: 'Jelszó',
+                            name: 'password'
+                        },
+                                            {
+                            xtype: 'textfield',
+                            inputType: 'email',
+                            fieldLabel: 'E-mail',
+                            name: 'email'
+                        }],
+						buttons: [
+							{ text: "Regisztráció", 
+							  handler: function() {
+						            var form = this.up('form').getForm();
+                                                            Ext.Ajax.request({
+                                                                url : '/user/new',
+                                                                method: 'POST',
+                                                                headers: { 'Content-Type': 'application/json' },                     
+                                                                params : { "test" : "testParam" },
+                                                                jsonData: {
+                                                                    "username" : "admin",
+                                                                    "password" : "admin",
+                                                                    "email" : "admin@admin.com"
+                                                                },
+                                                                success: function (response) {
+                                                                    var jsonResp = Ext.util.JSON.decode(response.responseText);
+                                                                    Ext.Msg.alert("Info","UserName from Server : "+jsonResp.username);
+                                                                },
+                                                                failure: function (response) {
+                                                                    var jsonResp = Ext.util.JSON.decode(response.responseText);
+                                                                    Ext.Msg.alert("Error",jsonResp.error);
+                                                                }
+                                                              });
+						            /*form.submit({
+					                    success: function(form, action) {
+					                        Ext.Msg.alert('Success', action.result.msg);
+					                     },
+					                     failure: function(form, action) {
+					                         Ext.Msg.alert('Failed', action.result.msg);
+					                     }
+						            }) */
+        
+							  } 
+							},
+							{ text: "Reset", 
+							  handler: function() { this.up('form').getForm().reset(); } 
+							}
+						]
+                    });
+                    Ext.create('Ext.panel.Panel', {
+                    	renderTo: "maindiv",
+                    	width: 1000,
+                    	height:500,
+                    	layout: 'border', 
+                    	items: [
+                    		{ region:'west', width: 140, 
+                    		   layout: {
+	                    		   type:'vbox',
+	                    		   pack:'center'
+                    		   },
+                    		   items: [{
+								xtype: 'image',
+								src: 'images/ursula.png',
+								shrinkWrap: true,
+								alt: 'NĹ‘vĂ©rke',
+								width:140,
+								height:400
+                    		   }]	
+                    		},
+                    		regpanel,
+                    		{ region:'east', width: 140}
+                    	]
+                    }).center();
+                });
+                </script>
+    </head>
+    <body>
+    	<div id="maindiv" style="height: 500px"/>
+<!--
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>-->
+    </body>
+</html>

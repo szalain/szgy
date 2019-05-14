@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: hu.elte.szgy.szalain.tudor.QuestionControllerTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 8.418 s - in hu.elte.szgy.szalain.tudor.QuestionControllerTest
